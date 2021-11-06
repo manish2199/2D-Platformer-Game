@@ -9,19 +9,62 @@ public class PlayerController : MonoBehaviour
 
    void Update()
    {
-       float speed = Input.GetAxis("Horizontal");
-       Debug.Log(speed);
-       playerAnim.SetFloat("Speed",Mathf.Abs(speed));
-   
+       float Horizontal = Input.GetAxis("Horizontal");
+       float Vertical = Input.GetAxisRaw("Jump"); 
+       PlayerFlip(Horizontal);
+
+       AnimationController(Horizontal,Vertical);
+
+    
+       PlayerMovement();
+   }
+
+   void PlayerMovement()
+   {
+
+   }
+
+   void AnimationController(float horizontal , float vertical)
+   {
+
+      // For Run Animation   
+       playerAnim.SetFloat("Speed",Mathf.Abs(horizontal));
+      
+      
+      // For Jump Animation
+      if( vertical > 0)
+      {
+        playerAnim.SetTrigger("jump");
+      }
+  
+
+      // For Crouch Animation
+      if ( Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)  ) 
+      {
+        playerAnim.SetBool("crouch",true);
+      }
+      else
+      {
+        playerAnim.SetBool("crouch",false);
+      }
+   }
+
+
+   void PlayerFlip(float horizontal)
+   {
       Vector3 scale = transform.localScale;
-      if(speed < 0)
+      if(horizontal < 0)
       {
         scale.x = -1f * Mathf.Abs(scale.x);
       }
-      if(speed > 0)
+      if(horizontal > 0)
       {
         scale.x = Mathf.Abs(scale.x);
       }
       transform.localScale = scale;
    }
+
+
+
+
 }
