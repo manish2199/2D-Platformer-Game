@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
    public Animator playerAnim;
 
+   public float Speed;
 
    void Update()
    {
@@ -16,11 +17,15 @@ public class PlayerController : MonoBehaviour
        AnimationController(Horizontal,Vertical);
 
     
-       PlayerMovement();
+       PlayerMovement(Horizontal);
    }
 
-   void PlayerMovement()
+   void PlayerMovement(float horizontal)
    {
+      // Horizontal Movement
+      Vector3 temp = transform.position;
+      temp.x += horizontal * Speed * Time.deltaTime;
+      transform.position = temp;
 
    }
 
@@ -42,10 +47,12 @@ public class PlayerController : MonoBehaviour
       if ( Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)  ) 
       {
         playerAnim.SetBool("crouch",true);
+        Speed = 0f;
       }
       else
       {
         playerAnim.SetBool("crouch",false);
+        Speed = 10f;
       }
    }
 
