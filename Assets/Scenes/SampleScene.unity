@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 331832034}
   m_Layer: 6
   m_Name: Platform1
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 391554280}
   m_Layer: 6
   m_Name: Platform1 (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -356,7 +356,7 @@ GameObject:
   - component: {fileID: 406966711}
   m_Layer: 6
   m_Name: Platform2 (1)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -585,7 +585,7 @@ GameObject:
   - component: {fileID: 1440115544}
   m_Layer: 6
   m_Name: Platform2
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -695,7 +695,7 @@ GameObject:
   - component: {fileID: 1560243718}
   m_Layer: 6
   m_Name: Platform2 (2)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -805,7 +805,7 @@ GameObject:
   - component: {fileID: 2070832376}
   m_Layer: 6
   m_Name: Platform1 (2)
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -911,7 +911,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1716709884, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
       propertyPath: Speed
-      value: 10
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716709884, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
+      propertyPath: jumpForce
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 1716709885, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
       propertyPath: m_Size.y
@@ -923,7 +927,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1716709886, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
       propertyPath: m_Mass
-      value: 10
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716709886, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
+      propertyPath: m_Constraints
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1063838261273919272, guid: 3edeeb153d25a50408df42e60cd73780,
         type: 3}

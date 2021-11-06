@@ -7,6 +7,16 @@ public class PlayerController : MonoBehaviour
    public Animator playerAnim;
 
    public float Speed;
+   public float jumpForce;
+
+   Rigidbody2D rigidbody2D;
+
+   bool Grounded;
+
+   void Awake()
+   {
+     rigidbody2D = GetComponent<Rigidbody2D>();
+   }
 
    void Update()
    {
@@ -17,15 +27,23 @@ public class PlayerController : MonoBehaviour
        AnimationController(Horizontal,Vertical);
 
     
-       PlayerMovement(Horizontal);
+       PlayerMovement(Horizontal,Vertical);
+
+       print(Grounded);
    }
 
-   void PlayerMovement(float horizontal)
+   void PlayerMovement(float horizontal , float vertical)
    {
       // Horizontal Movement
       Vector3 temp = transform.position;
       temp.x += horizontal * Speed * Time.deltaTime;
       transform.position = temp;
+
+      // Jump Controller
+       if(Grounded && vertical > 0 )
+      {
+        rigidbody2D.AddForce( new Vector2(0 , jumpForce),ForceMode2D.Force);
+      }
 
    }
 
@@ -37,7 +55,7 @@ public class PlayerController : MonoBehaviour
       
       
       // For Jump Animation
-      if( vertical > 0)
+      if(Grounded && vertical > 0 )
       {
         playerAnim.SetTrigger("jump");
       }
@@ -71,7 +89,24 @@ public class PlayerController : MonoBehaviour
       transform.localScale = scale;
    }
 
+  
+   void OnCollisionEnter2D(Collision2D col)
+   {
+     if ( col.gameObject.tag == "Ground")
+     {
+       Grounded = true;
+     }
 
+   }
+
+    void OnCollisionExit2D(Collision2D col)
+   {
+     if ( col.gameObject.tag == "Ground")
+     {
+       Grounded = false;
+     }
+
+   }
 
 
 }
