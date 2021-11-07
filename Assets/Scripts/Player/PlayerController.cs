@@ -9,43 +9,53 @@ public class PlayerController : MonoBehaviour
    public float Speed;
    public float jumpForce;
 
+   float Horizontal;
+   float Vertical;
+
+
+   BoxCollider2D playerCollider;
    Rigidbody2D rigidbody2D;
 
-   bool Grounded;
+   bool Grounded = false;
 
    void Awake()
    {
      rigidbody2D = GetComponent<Rigidbody2D>();
+     playerCollider = GetComponent<BoxCollider2D>();
    }
 
    void Update()
    {
-       float Horizontal = Input.GetAxis("Horizontal");
-       float Vertical = Input.GetAxisRaw("Jump"); 
-       PlayerFlip(Horizontal);
-
+       Horizontal = Input.GetAxis("Horizontal");
+       Vertical = Input.GetAxisRaw("Jump"); 
+     
        AnimationController(Horizontal,Vertical);
 
-    
-       PlayerMovement(Horizontal,Vertical);
-
-       print(Grounded);
+       
+       PlayerMovement(Horizontal);
    }
 
-   void PlayerMovement(float horizontal , float vertical)
+   void FixedUpdate()
+   {
+      // Jump Controller
+       if(Grounded && Vertical > 0 )
+      {
+        rigidbody2D.AddForce( new Vector2(0,jumpForce),ForceMode2D.Force);
+      }
+   }
+
+   void PlayerMovement(float horizontal )
    {
       // Horizontal Movement
       Vector3 temp = transform.position;
       temp.x += horizontal * Speed * Time.deltaTime;
       transform.position = temp;
 
-      // Jump Controller
-       if(Grounded && vertical > 0 )
-      {
-        rigidbody2D.AddForce( new Vector2(0 , jumpForce),ForceMode2D.Force);
-      }
-
+      PlayerFlip(horizontal);
    }
+
+
+   
 
    void AnimationController(float horizontal , float vertical)
    {
@@ -66,11 +76,15 @@ public class PlayerController : MonoBehaviour
       {
         playerAnim.SetBool("crouch",true);
         Speed = 0f;
+        playerCollider.size = new Vector2 ( 0.6334516f,1.321949f);
+        playerCollider.offset = new Vector2 ( 0.02000001f, 0.61f);
       }
       else
       {
         playerAnim.SetBool("crouch",false);
-        Speed = 10f;
+        Speed = 8f;
+        playerCollider.size = new Vector2 (0.6334516f,2.07323f);
+        playerCollider.offset= new Vector2 (0.02000001f,0.9816846f);
       }
    }
 
@@ -90,23 +104,22 @@ public class PlayerController : MonoBehaviour
    }
 
   
-   void OnCollisionEnter2D(Collision2D col)
+   void OnCollisionStay2D(Collision2D col)
    {
      if ( col.gameObject.tag == "Ground")
      {
        Grounded = true;
      }
 
+
    }
 
     void OnCollisionExit2D(Collision2D col)
    {
-     if ( col.gameObject.tag == "Ground")
-     {
        Grounded = false;
-     }
-
+        rigidbody2D.AddForce( new Vector2(0,-500f),ForceMode2D.Force);
    }
 
 
 }
+       
