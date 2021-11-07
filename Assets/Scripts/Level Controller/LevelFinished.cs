@@ -8,6 +8,13 @@ public class LevelFinished : MonoBehaviour
 {
     public GameObject levelFinishedText;
 
+     GameObject player;
+
+    void Awake()
+    {
+      player = GameObject.FindGameObjectWithTag("Player");
+    }
+
     void OnTriggerEnter2D( Collider2D target)
     {
         if ( target.gameObject.GetComponent<PlayerController>() != null)
@@ -20,6 +27,7 @@ public class LevelFinished : MonoBehaviour
     IEnumerator leveloneFinished()
    {
       levelFinishedText.SetActive(true);
+      player.SetActive(false);
 
       yield return new WaitForSeconds(3f);
 
