@@ -5,6 +5,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
    public Animator playerAnim;
+   public ScoreController scoreContro;
 
    public float Speed;
    public float jumpForce;
@@ -71,6 +72,11 @@ public class PlayerController : MonoBehaviour
      {
         rigidbody2D.gravityScale = 0f;
      }
+   }
+
+   public void KeyCollected()
+   { 
+     scoreContro.IncreaseScore(10); 
    }
        
 
