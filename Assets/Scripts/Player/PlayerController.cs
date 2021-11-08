@@ -12,11 +12,17 @@ public class PlayerController : MonoBehaviour
    float Horizontal;
    float Vertical;
 
-
    BoxCollider2D playerCollider;
    Rigidbody2D rigidbody2D;
 
-   bool Grounded = false;
+   // Ground  Collision
+   public LayerMask groundLayer;
+   public bool Grounded;
+   public float groundLength;
+   [SerializeField]Vector3 colliderOffset;
+   [SerializeField]float gravity = 1 ;
+   [SerializeField]float gravityMultiplyer = 5;
+   
 
    void Awake()
    {
@@ -26,23 +32,55 @@ public class PlayerController : MonoBehaviour
 
    void Update()
    {
-       Horizontal = Input.GetAxis("Horizontal");
-       Vertical = Input.GetAxisRaw("Jump"); 
-     
-       AnimationController(Horizontal,Vertical);
+       Grounded =Physics2D.Raycast(transform.position + colliderOffset,Vector2.down,groundLength,groundLayer) || Physics2D.Raycast(transform.position-colliderOffset,Vector2.down,groundLength,groundLayer);
 
+       Horizontal = Input.GetAxis("Horizontal");
+       
+       AnimationController(Horizontal);
        
        PlayerMovement(Horizontal);
+
+     if ( Grounded  && Input.GetButtonDown("Jump"))
+     {
+     Jump();
+     }
    }
 
    void FixedUpdate()
    {
-      // Jump Controller
-       if(Grounded && Vertical > 0 )
-      {
-        rigidbody2D.AddForce( new Vector2(0,jumpForce),ForceMode2D.Force);
-      }
+    ModifyGravity();
    }
+
+
+   void ModifyGravity()
+   {
+     if( !Grounded)
+     {
+        rigidbody2D.gravityScale = gravity; 
+        rigidbody2D.drag = 0.6f;
+        if ( rigidbody2D.velocity.y < 0 )
+        {
+          rigidbody2D.gravityScale = gravity * gravityMultiplyer;
+        }
+        if ( rigidbody2D.velocity.y > 0 && !Input.GetButtonDown("Jump") )
+        {
+          rigidbody2D.gravityScale = gravity * ( gravityMultiplyer / 2);
+        }
+     }
+     else
+     {
+        rigidbody2D.gravityScale = 0f;
+     }
+   }
+       
+
+   void Jump()
+    {
+      // Jump Controller
+        rigidbody2D.velocity= new Vector2(rigidbody2D.velocity.x,0);
+        rigidbody2D.AddForce(Vector2.up * jumpForce , ForceMode2D.Impulse);
+        playerAnim.SetTrigger("jump");
+    }
 
    void PlayerMovement(float horizontal )
    {
@@ -55,35 +93,28 @@ public class PlayerController : MonoBehaviour
    }
 
 
-   
-
-   void AnimationController(float horizontal , float vertical)
+  void AnimationController(float horizontal)
    {
 
       // For Run Animation   
        playerAnim.SetFloat("Speed",Mathf.Abs(horizontal));
       
-      
-      // For Jump Animation
-      if(Grounded && vertical > 0 )
-      {
-        playerAnim.SetTrigger("jump");
-      }
-  
 
       // For Crouch Animation
-      if ( Input.GetKey(KeyCode.RightControl) || Input.GetKey(KeyCode.LeftControl)  ) 
+      if ( Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftControl)  ) 
       {
         playerAnim.SetBool("crouch",true);
         Speed = 0f;
-        playerCollider.size = new Vector2 ( 0.6334516f,1.321949f);
-        playerCollider.offset = new Vector2 ( 0.02000001f, 0.61f);
+        // Resizing the collider while crouch
+        playerCollider.size = new Vector2 (0.7084f,1.321949f);
+        playerCollider.offset = new Vector2 (-0.084235f, 0.61f);
       }
-      else
+      else if ( Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftControl) )
       {
         playerAnim.SetBool("crouch",false);
         Speed = 8f;
-        playerCollider.size = new Vector2 (0.6334516f,2.07323f);
+        // Collider Size while standing 
+        playerCollider.size = new Vector2 (0.5f,2.07323f);
         playerCollider.offset= new Vector2 (0.02000001f,0.9816846f);
       }
    }
@@ -103,23 +134,13 @@ public class PlayerController : MonoBehaviour
       transform.localScale = scale;
    }
 
-  
-   void OnCollisionStay2D(Collision2D col)
+   
+   void OnDrawGizmos()
    {
-     if ( col.gameObject.tag == "Ground")
-     {
-       Grounded = true;
-     }
-
-
+      Gizmos.color =  Color.red;
+      Gizmos.DrawLine(transform.position + colliderOffset , transform.position + colliderOffset + Vector3.down * groundLength);
+      Gizmos.DrawLine(transform.position - colliderOffset , transform.position - colliderOffset + Vector3.down * groundLength);
    }
-
-    void OnCollisionExit2D(Collision2D col)
-   {
-       Grounded = false;
-        rigidbody2D.AddForce( new Vector2(0,-500f),ForceMode2D.Force);
-   }
-
 
 }
        

@@ -1351,7 +1351,7 @@ GameObject:
   - component: {fileID: 1088304510}
   - component: {fileID: 1088304509}
   - component: {fileID: 1088304508}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: GroundTile
   m_TagString: Ground
   m_Icon: {fileID: 0}
@@ -2836,7 +2836,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1716709884, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
       propertyPath: jumpForce
-      value: 750
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716709884, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
+      propertyPath: groundLength
+      value: 0.15
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716709884, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
+      propertyPath: colliderOffset.x
+      value: 0.23
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716709884, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
+      propertyPath: colliderOffset.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716709884, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
+      propertyPath: colliderOffset.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1716709884, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
+      propertyPath: groundLayer.m_Bits
+      value: 64
       objectReference: {fileID: 0}
     - target: {fileID: 1716709885, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
       propertyPath: m_Size.y
@@ -2852,7 +2872,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1716709886, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
       propertyPath: m_Mass
-      value: 5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1716709886, guid: 3edeeb153d25a50408df42e60cd73780, type: 3}
       propertyPath: m_Constraints
