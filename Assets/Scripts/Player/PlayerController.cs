@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour
    public float jumpForce;
 
    float Horizontal;
-   float Vertical;
 
    BoxCollider2D playerCollider;
    Rigidbody2D rigidbody2D;
@@ -36,7 +35,6 @@ public class PlayerController : MonoBehaviour
      {
        return false;
      }
-    //  else if ( playerHealth < 0)
        return true;
    }
 
@@ -51,7 +49,7 @@ public class PlayerController : MonoBehaviour
    {
      if ( isAlive() )
      {
-        Grounded =Physics2D.Raycast(transform.position + colliderOffset,Vector2.down,groundLength,groundLayer) || Physics2D.Raycast(transform.position-colliderOffset,Vector2.down,groundLength,groundLayer);
+       Grounded =Physics2D.Raycast(transform.position + colliderOffset,Vector2.down,groundLength,groundLayer) || Physics2D.Raycast(transform.position-colliderOffset,Vector2.down,groundLength,groundLayer);
 
        Horizontal = Input.GetAxis("Horizontal");
        
@@ -133,17 +131,11 @@ public class PlayerController : MonoBehaviour
       {
         playerAnim.SetBool("crouch",true);
         Speed = 0f;
-        // Resizing the collider while crouch
-        playerCollider.size = new Vector2 (0.7084f,1.321949f);
-        playerCollider.offset = new Vector2 (-0.084235f, 0.61f);
       }
       else if ( Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftControl) )
       {
         playerAnim.SetBool("crouch",false);
         Speed = 8f;
-        // Collider Size while standing 
-        playerCollider.size = new Vector2 (0.5f,2.07323f);
-        playerCollider.offset= new Vector2 (0.02000001f,0.9816846f);
       }
    }
 
@@ -181,9 +173,11 @@ public class PlayerController : MonoBehaviour
 
    IEnumerator playerDied()
    {
-     playerAnim.SetBool("Death",true);
+     playerAnim.SetTrigger("Death");
      
       yield return new WaitForSeconds(1f);
+
+
     
     //  gameObject.SetActive(false);
      

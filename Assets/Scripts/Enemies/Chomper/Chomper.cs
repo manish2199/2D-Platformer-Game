@@ -8,13 +8,15 @@ public class Chomper : MonoBehaviour
     public float Speed;
     public float distance;
     private bool moveRight;
+    BoxCollider2D collider;
 
     // Attack 
     private bool playerCollide;
     public LayerMask playerLayer;
     public float distfromPlayer;
     private PlayerController player;
-
+    bool canAttack = true;
+ 
     public Transform groundDetection;
 
     // Animation
@@ -22,54 +24,56 @@ public class Chomper : MonoBehaviour
 
   void Awake()
   {
+    collider = GetComponent<BoxCollider2D>();
     animator = GetComponent<Animator>();
-   player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+    player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
   } 
 
 
    void Update()
    {
       enemyPatrolling();
-
-     
-      enemyAttack();
       
+      enemyAttack();
    }
 
 
    void enemyAttack()
    {
-    if(moveRight)
-    {
-      playerCollide = Physics2D.Raycast(transform.position,Vector2.right,distfromPlayer,playerLayer);
+     if(canAttack)
+     {
+       SetRayCast();
+
+        if(playerCollide && player.isAlive())
+       {
+          canAttack = false;
+          player.reduceLife();
+          StartCoroutine(attackAnimation());
+       }
+     }
     }
-    else
+
+    void SetRayCast()
     {
-      playerCollide = Physics2D.Raycast(transform.position,Vector2.left,distfromPlayer,playerLayer);
+        if(moveRight)
+       {
+        playerCollide = Physics2D.Raycast(transform.position,Vector2.right,distfromPlayer,playerLayer);
+       }
+       else
+       {
+        playerCollide = Physics2D.Raycast(transform.position,Vector2.left,distfromPlayer,playerLayer);
+       }
     }
 
-      if(playerCollide && player.isAlive())
-      {
-        player.reduceLife();
-        // perform attack anim;
-        animator.SetTrigger("Attack");
 
-        // StartCoroutine(attackAnimation());
-        // Debug.Log(player.playerHealth);
-        gameObject.SetActive(false);
-      }
+   IEnumerator attackAnimation()
+   {
+     animator.SetTrigger("Attack");
 
+     yield return new WaitForSeconds(0.5f);
+     
+      gameObject.SetActive(false);
    }
-
-
-//    IEnumerator attackAnimation()
-//    {
-    //  animator.SetTrigger("Attack");
-
-    //   yield return new WaitForSeconds(1f);
-
-    //   gameObject.SetActive(false);
-//    }
 
    void OnDrawGizmos()
    {
