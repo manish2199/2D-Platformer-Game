@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
 {
    public Animator playerAnim;
    public ScoreController scoreContro;
+   public Transform respawnPos;
 
    public float Speed;
    public float jumpForce;
@@ -19,6 +20,7 @@ public class PlayerController : MonoBehaviour
 
     int playerHealth = 3;
     public GameObject[] lifes;
+    public GameObject playerDeadText;
 
    // Ground  Collision
    public LayerMask groundLayer;
@@ -165,26 +167,41 @@ public class PlayerController : MonoBehaviour
 
     public void reduceLife()
    {
-       playerHealth --;
-       Debug.Log(playerHealth);
-       lifes[playerHealth].SetActive(false);
+      playerHealth --;
+      lifes[playerHealth].SetActive(false);    
+       StartCoroutine(respawn());  
+   }
+
+   IEnumerator respawn()
+   {
+      playerAnim.SetTrigger("Death");
+
+      yield return new WaitForSeconds(1f);
+  
+      GetComponent<SpriteRenderer>().enabled = false;
+      
+      yield return new WaitForSeconds(1f);
+
+      playerAnim.SetTrigger("Respawn");
+      transform.position = respawnPos.position;
+      GetComponent<SpriteRenderer>().enabled = true;
+  
    }
 
 
    IEnumerator playerDied()
    {
-     playerAnim.SetTrigger("Death");
+      playerAnim.SetTrigger("Death");
      
       yield return new WaitForSeconds(1f);
 
-
+      GetComponent<SpriteRenderer>().enabled = false;
+      playerDeadText.SetActive(true);
+      
+      yield return new WaitForSeconds(1.5f);
     
-    //  gameObject.SetActive(false);
-     
-    //  yield return new WaitForSeconds(0.5f);
       SceneManager.LoadScene("SampleScene");
-
-   }
+    }
 
 }
        
