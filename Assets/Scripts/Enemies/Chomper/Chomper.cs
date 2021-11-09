@@ -13,8 +13,18 @@ public class Chomper : MonoBehaviour
     private bool playerCollide;
     public LayerMask playerLayer;
     public float distfromPlayer;
+    private PlayerController player;
 
     public Transform groundDetection;
+
+    // Animation
+    Animator animator;
+
+  void Awake()
+  {
+    animator = GetComponent<Animator>();
+   player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+  } 
 
 
    void Update()
@@ -22,27 +32,43 @@ public class Chomper : MonoBehaviour
       enemyPatrolling();
 
      
-    //   enemyAttack();
+      enemyAttack();
       
    }
 
 
-//    void enemyAttack()
+   void enemyAttack()
+   {
+    if(moveRight)
+    {
+      playerCollide = Physics2D.Raycast(transform.position,Vector2.right,distfromPlayer,playerLayer);
+    }
+    else
+    {
+      playerCollide = Physics2D.Raycast(transform.position,Vector2.left,distfromPlayer,playerLayer);
+    }
+
+      if(playerCollide && player.isAlive())
+      {
+        player.reduceLife();
+        // perform attack anim;
+        animator.SetTrigger("Attack");
+
+        // StartCoroutine(attackAnimation());
+        // Debug.Log(player.playerHealth);
+        gameObject.SetActive(false);
+      }
+
+   }
+
+
+//    IEnumerator attackAnimation()
 //    {
-//     if(moveRight)
-//     {
-//       playerCollide = Physics2D.Raycast(transform.position,Vector2.right,distfromPlayer,playerLayer);
-//     }
-//     else
-//     {
-//       playerCollide = Physics2D.Raycast(transform.position,Vector2.left,distfromPlayer,playerLayer);
-//     }
+    //  animator.SetTrigger("Attack");
 
-//       if(playerCollide)
-//       {
+    //   yield return new WaitForSeconds(1f);
 
-//       }
-
+    //   gameObject.SetActive(false);
 //    }
 
    void OnDrawGizmos()

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
@@ -16,6 +17,10 @@ public class PlayerController : MonoBehaviour
    BoxCollider2D playerCollider;
    Rigidbody2D rigidbody2D;
 
+
+    int playerHealth = 3;
+    public GameObject[] lifes;
+
    // Ground  Collision
    public LayerMask groundLayer;
    public bool Grounded;
@@ -25,15 +30,28 @@ public class PlayerController : MonoBehaviour
    [SerializeField]float gravityMultiplyer = 5;
    
 
+   public bool isAlive()
+   {
+     if( playerHealth <=0)
+     {
+       return false;
+     }
+    //  else if ( playerHealth < 0)
+       return true;
+   }
+
    void Awake()
    {
      rigidbody2D = GetComponent<Rigidbody2D>();
      playerCollider = GetComponent<BoxCollider2D>();
    }
 
+
    void Update()
    {
-       Grounded =Physics2D.Raycast(transform.position + colliderOffset,Vector2.down,groundLength,groundLayer) || Physics2D.Raycast(transform.position-colliderOffset,Vector2.down,groundLength,groundLayer);
+     if ( isAlive() )
+     {
+        Grounded =Physics2D.Raycast(transform.position + colliderOffset,Vector2.down,groundLength,groundLayer) || Physics2D.Raycast(transform.position-colliderOffset,Vector2.down,groundLength,groundLayer);
 
        Horizontal = Input.GetAxis("Horizontal");
        
@@ -41,9 +59,14 @@ public class PlayerController : MonoBehaviour
        
        PlayerMovement(Horizontal);
 
-     if ( Grounded  && Input.GetButtonDown("Jump"))
+       if ( Grounded  && Input.GetButtonDown("Jump"))
+       {
+       Jump();
+       }
+     }
+     else if ( !isAlive())
      {
-     Jump();
+      StartCoroutine("playerDied");
      }
    }
 
@@ -51,7 +74,6 @@ public class PlayerController : MonoBehaviour
    {
     ModifyGravity();
    }
-
 
    void ModifyGravity()
    {
@@ -146,6 +168,28 @@ public class PlayerController : MonoBehaviour
       Gizmos.color =  Color.red;
       Gizmos.DrawLine(transform.position + colliderOffset , transform.position + colliderOffset + Vector3.down * groundLength);
       Gizmos.DrawLine(transform.position - colliderOffset , transform.position - colliderOffset + Vector3.down * groundLength);
+   }
+
+
+    public void reduceLife()
+   {
+       playerHealth --;
+       Debug.Log(playerHealth);
+       lifes[playerHealth].SetActive(false);
+   }
+
+
+   IEnumerator playerDied()
+   {
+     playerAnim.SetBool("Death",true);
+     
+      yield return new WaitForSeconds(1f);
+    
+    //  gameObject.SetActive(false);
+     
+    //  yield return new WaitForSeconds(0.5f);
+      SceneManager.LoadScene("SampleScene");
+
    }
 
 }
