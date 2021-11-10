@@ -14,7 +14,7 @@ public class Chomper : MonoBehaviour
     private bool playerCollide;
     public LayerMask playerLayer;
     public float distfromPlayer;
-    private PlayerController player;
+    private PlayerStats player;
     bool canAttack = true;
  
     public Transform groundDetection;
@@ -26,7 +26,7 @@ public class Chomper : MonoBehaviour
   {
     collider = GetComponent<BoxCollider2D>();
     animator = GetComponent<Animator>();
-    player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
+    player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
   } 
 
 

@@ -8,7 +8,9 @@ public class LevelFinished : MonoBehaviour
 {
     public GameObject levelFinishedText;
 
-     GameObject player;
+    GameObject player;
+
+    public bool levelComplete;
 
     void Awake()
     {
@@ -21,6 +23,8 @@ public class LevelFinished : MonoBehaviour
         {
             Debug.Log("Level Finished");
             StartCoroutine(leveloneFinished());
+            levelComplete = true;
+            
         }
     }
 

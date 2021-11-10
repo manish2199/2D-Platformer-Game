@@ -1,26 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-   public Animator playerAnim;
-   public ScoreController scoreContro;
-   public Transform respawnPos;
-
-   public float Speed;
-   public float jumpForce;
-
-   float Horizontal;
-
+  [SerializeField]
+   Animator playerAnim;
+   
    BoxCollider2D playerCollider;
    Rigidbody2D rigidbody2D;
+   PlayerStats playerStats;
+  
+   // Movement Variable
+   public float Speed;
+   public float jumpForce;
+   float Horizontal;
 
-
-    int playerHealth = 3;
-    public GameObject[] lifes;
-    public GameObject playerDeadText;
 
    // Ground  Collision
    public LayerMask groundLayer;
@@ -31,25 +26,19 @@ public class PlayerController : MonoBehaviour
    [SerializeField]float gravityMultiplyer = 5;
    
 
-   public bool isAlive()
-   {
-     if( playerHealth <=0)
-     {
-       return false;
-     }
-       return true;
-   }
+  
 
    void Awake()
    {
      rigidbody2D = GetComponent<Rigidbody2D>();
      playerCollider = GetComponent<BoxCollider2D>();
+     playerStats = GetComponent<PlayerStats>();
    }
 
 
    void Update()
    {
-     if ( isAlive() )
+     if ( playerStats.isAlive() )
      {
        Grounded =Physics2D.Raycast(transform.position + colliderOffset,Vector2.down,groundLength,groundLayer) || Physics2D.Raycast(transform.position-colliderOffset,Vector2.down,groundLength,groundLayer);
 
@@ -63,12 +52,8 @@ public class PlayerController : MonoBehaviour
        {
        Jump();
        }
-     }
-     else if ( !isAlive())
-     {
-      StartCoroutine("playerDied");
-     }
-   }
+     }   
+  }
 
    void FixedUpdate()
    {
@@ -96,10 +81,7 @@ public class PlayerController : MonoBehaviour
      }
    }
 
-   public void KeyCollected()
-   { 
-     scoreContro.IncreaseScore(10); 
-   }
+ 
        
 
    void Jump()
@@ -165,43 +147,6 @@ public class PlayerController : MonoBehaviour
    }
 
 
-    public void reduceLife()
-   {
-      playerHealth --;
-      lifes[playerHealth].SetActive(false);    
-       StartCoroutine(respawn());  
-   }
-
-   IEnumerator respawn()
-   {
-      playerAnim.SetTrigger("Death");
-
-      yield return new WaitForSeconds(1f);
   
-      GetComponent<SpriteRenderer>().enabled = false;
-      
-      yield return new WaitForSeconds(1f);
-
-      playerAnim.SetTrigger("Respawn");
-      transform.position = respawnPos.position;
-      GetComponent<SpriteRenderer>().enabled = true;
-  
-   }
-
-
-   IEnumerator playerDied()
-   {
-      playerAnim.SetTrigger("Death");
-     
-      yield return new WaitForSeconds(1f);
-
-      GetComponent<SpriteRenderer>().enabled = false;
-      playerDeadText.SetActive(true);
-      
-      yield return new WaitForSeconds(1.5f);
-    
-      SceneManager.LoadScene("SampleScene");
-    }
-
 }
        

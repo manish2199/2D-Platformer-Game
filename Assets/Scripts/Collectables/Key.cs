@@ -21,7 +21,7 @@ public class Key : MonoBehaviour
   {
     if ( target.gameObject.GetComponent<PlayerController>() != null)
     {
-       PlayerController player = target.gameObject.GetComponent<PlayerController>();
+       PlayerStats player = target.gameObject.GetComponent<PlayerStats>();
       //  anim.Play("Key_Collected");
        player.KeyCollected();
        Destroy(gameObject);
