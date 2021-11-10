@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
    public float Speed;
    public float jumpForce;
    float Horizontal;
+   [HideInInspector]public bool canMove = true;
 
 
    // Ground  Collision
@@ -38,7 +39,7 @@ public class PlayerController : MonoBehaviour
 
    void Update()
    {
-     if ( playerStats.isAlive() )
+     if ( playerStats.isAlive() && canMove )
      {
        Grounded =Physics2D.Raycast(transform.position + colliderOffset,Vector2.down,groundLength,groundLayer) || Physics2D.Raycast(transform.position-colliderOffset,Vector2.down,groundLength,groundLayer);
 

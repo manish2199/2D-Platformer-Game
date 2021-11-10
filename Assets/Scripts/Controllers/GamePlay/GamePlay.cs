@@ -1,7 +1,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+
+
 
 public class GamePlay : MonoBehaviour
 {
@@ -9,7 +12,7 @@ public class GamePlay : MonoBehaviour
 
    [SerializeField]private PlayerStats playerInfo;
 
-   [SerializeField] GameObject gameOverText;
+   [SerializeField] GameObject gameOverPanel;
 
 
    [SerializeField] Animator playerAnim;
@@ -20,10 +23,15 @@ public class GamePlay : MonoBehaviour
 
    [SerializeField] GameObject lifes;
 
+   [SerializeField] Button restartButton;
+   [SerializeField] Button mainMenuButton;
+
 
 
    void Awake()
    {
+       restartButton.onClick.AddListener(restartGame);
+       mainMenuButton.onClick.AddListener(mainMenu);
        makeStatiInstance();
    }
 
@@ -53,14 +61,19 @@ public class GamePlay : MonoBehaviour
       yield return new WaitForSeconds(1f);
 
       player.GetComponent<SpriteRenderer>().enabled = false;
-      gameOverText.SetActive(true);
-
-      
-      yield return new WaitForSeconds(1.5f);
-    
-      SceneManager.LoadScene("Level1");
+      gameOverPanel.SetActive(true);
     }
 
+
+    void restartGame()
+    {
+       SceneManager.LoadScene("Level1");
+    }
+
+    void mainMenu()
+    {
+       SceneManager.LoadScene("MainMenu");
+    }
    
 
 

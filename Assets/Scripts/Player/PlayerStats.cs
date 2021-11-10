@@ -10,8 +10,16 @@ public class PlayerStats : MonoBehaviour
    int playerHealth = 3; 
    public GameObject[] lifes;
    public Transform respawnPos;
-   [SerializeField] Animator playerAnim;
+   PlayerController playerContro;
 
+   [SerializeField] Animator playerAnim;
+   
+
+
+  void Awake()
+  {
+       playerContro = GameObject.Find("Player").GetComponent<PlayerController>();
+  }
   
 
    public bool isAlive()
@@ -36,11 +44,13 @@ public class PlayerStats : MonoBehaviour
       playerHealth --;
       lifes[playerHealth].SetActive(false);    
       StartCoroutine(respawn());  
+
    }
 
    IEnumerator respawn()
    {
       playerAnim.SetTrigger("Death");
+      playerContro.canMove = false;
 
       yield return new WaitForSeconds(1f);
   
@@ -51,5 +61,6 @@ public class PlayerStats : MonoBehaviour
       playerAnim.SetTrigger("Respawn");
       transform.position = respawnPos.position;
       GetComponent<SpriteRenderer>().enabled = true;
+      playerContro.canMove = true;
     }
 }
