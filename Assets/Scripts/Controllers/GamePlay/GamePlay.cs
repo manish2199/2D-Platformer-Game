@@ -24,14 +24,10 @@ public class GamePlay : MonoBehaviour
    [SerializeField] GameObject lifes;
 
    [SerializeField] Button restartButton;
-   [SerializeField] Button mainMenuButton;
-
-
 
    void Awake()
    {
        restartButton.onClick.AddListener(restartGame);
-       mainMenuButton.onClick.AddListener(mainMenu);
        makeStatiInstance();
    }
 
@@ -67,13 +63,11 @@ public class GamePlay : MonoBehaviour
 
     void restartGame()
     {
-       SceneManager.LoadScene("Level1");
+      Scene scene = SceneManager.GetActiveScene();
+       SceneManager.LoadScene(scene.buildIndex);
     }
 
-    void mainMenu()
-    {
-       SceneManager.LoadScene("MainMenu");
-    }
+   
    
 
 
