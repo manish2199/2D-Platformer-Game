@@ -1461,7 +1461,7 @@ MonoBehaviour:
   player: {fileID: 1076487813}
   gameOverCollider: {fileID: 1402721918}
   lifes: {fileID: 817505864}
-  restartButton: {fileID: 0}
+  restartButton: {fileID: 5838514710791768126}
 --- !u!4 &727342910
 Transform:
   m_ObjectHideFlags: 0
@@ -3692,6 +3692,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6fa547338ca40574a8bf8a51022e70ee, type: 3}
+--- !u!114 &5838514710791768126 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5838514711374915237, guid: 6fa547338ca40574a8bf8a51022e70ee,
+    type: 3}
+  m_PrefabInstance: {fileID: 5838514710791768125}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6667393664677069580
 PrefabInstance:
   m_ObjectHideFlags: 0

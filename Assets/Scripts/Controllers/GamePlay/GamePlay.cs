@@ -5,7 +5,6 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 
-
 public class GamePlay : MonoBehaviour
 {
    public static GamePlay instace; 
@@ -64,7 +63,7 @@ public class GamePlay : MonoBehaviour
     void restartGame()
     {
       Scene scene = SceneManager.GetActiveScene();
-       SceneManager.LoadScene(scene.buildIndex);
+      SceneFader.instance.sceneFader(scene.buildIndex);
     }
 
    
