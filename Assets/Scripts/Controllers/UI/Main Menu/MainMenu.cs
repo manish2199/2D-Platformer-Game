@@ -13,12 +13,27 @@ public class MainMenu : MonoBehaviour
     [SerializeField] GameObject levelSelection;
     [SerializeField] GameObject[] menuUI;
 
+    [SerializeField] Animator playerAnimator;
 
 
     void Awake()
     {
         startButton.onClick.AddListener(StartGame); 
         quitButton.onClick.AddListener(QuitButton);
+    }
+
+    void Start()
+    {
+        //  playerAnimator.SetTrigger("StopPush"); 
+    }
+
+
+    void Update ()
+    {
+      // if ( playerAnimator.GetCurrentAnimatorStateInfo(0).IsName("Push"))
+      // {
+      //    playerAnimator.SetTrigger("StopPush");
+      // }
     }
 
     void StartGame()
@@ -38,5 +53,7 @@ public class MainMenu : MonoBehaviour
     {
       Application.Quit();
     }
+
+
   
 }
