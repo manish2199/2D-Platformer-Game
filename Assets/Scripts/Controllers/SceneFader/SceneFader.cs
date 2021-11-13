@@ -31,13 +31,13 @@ public class SceneFader : MonoBehaviour
       }
   }
 
-  public void sceneFader(int Level)
+  public void sceneFader(string Level)
   {
      StartCoroutine(scenefadeInOut(Level));
   }
 
 
-  IEnumerator scenefadeInOut(int lev)
+  IEnumerator scenefadeInOut(string lev)
   {
       SceneFaderPanel.SetActive(true);
       animator.Play("Fade_In");

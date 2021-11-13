@@ -63,7 +63,7 @@ public class GamePlay : MonoBehaviour
     void restartGame()
     {
       Scene scene = SceneManager.GetActiveScene();
-      SceneFader.instance.sceneFader(scene.buildIndex);
+      SceneFader.instance.sceneFader(scene.name);
     }
 
    
