@@ -26,14 +26,16 @@ public class LevelLoader : MonoBehaviour
       switch (state)
       {
           case LevelStatus.Locked :
-            print("Level Locked");
-            break;
+          // print("Level Locked");
+           AudioManager.instance.PlaySound(Sound.LevelLocked);
+           break;
 
           case LevelStatus.Completed :
            SceneFader.instance.sceneFader(level);
            break;
 
           case LevelStatus.Unlocked :
+           AudioManager.instance.PlaySound(Sound.LevelUnlocked);
            SceneFader.instance.sceneFader(level);
            break;
         }
@@ -44,7 +46,7 @@ public class LevelLoader : MonoBehaviour
          SceneFader.instance.sceneFader(level);
       }
 
-        //    SceneFader.instance.sceneFader(level);
+      
    }
 
 } 

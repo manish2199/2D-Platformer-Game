@@ -41,13 +41,13 @@ public class SceneFader : MonoBehaviour
   {
       SceneFaderPanel.SetActive(true);
       animator.Play("Fade_In");
-      yield return new WaitForSeconds(0.7f);
+      yield return new WaitForSeconds(0.5f);
  
       SceneManager.LoadScene(lev);
 
       animator.Play("Fade_Out");
 
-      yield return new WaitForSeconds(1f);
+      yield return new WaitForSeconds(0.4f);
 
       SceneFaderPanel.SetActive(false);
   }

@@ -13,7 +13,8 @@ public class PlayerStats : MonoBehaviour
    PlayerController playerContro;
 
    [SerializeField] Animator playerAnim;
-   
+
+  
 
 
   void Awake()
@@ -30,18 +31,25 @@ public class PlayerStats : MonoBehaviour
      }
        return true;
    }
-
+  
+   
+   void Start()
+   {
+    //  print(playerHealth);
+   }
 
    
     public void KeyCollected()
    { 
      scoreContro.IncreaseScore(10); 
+     AudioManager.instance.PlayMusic(Sound.KeyCollected);
    }
 
 
     public void reduceLife()
    {
       playerHealth --;
+      // print(playerHealth);
       lifes[playerHealth].SetActive(false);    
       StartCoroutine(respawn());  
 
@@ -51,13 +59,15 @@ public class PlayerStats : MonoBehaviour
    {
       playerAnim.SetTrigger("Death");
       playerContro.canMove = false;
+      AudioManager.instance.PlayMusic(Sound.PlayerDead);
 
-      yield return new WaitForSeconds(1f);
+      yield return new WaitForSeconds(1.5f);
   
       GetComponent<SpriteRenderer>().enabled = false;
       
-      yield return new WaitForSeconds(1f);
+      yield return new WaitForSeconds(0.5f);
 
+      AudioManager.instance.PlayMusic(Sound.GamePlayMusic);
       playerAnim.SetTrigger("Respawn");
       transform.position = respawnPos.position;
       GetComponent<SpriteRenderer>().enabled = true;

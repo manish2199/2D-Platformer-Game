@@ -24,7 +24,7 @@ public class MainMenu : MonoBehaviour
 
     void Start()
     {
-        //  playerAnimator.SetTrigger("StopPush"); 
+       AudioManager.instance.PlayMusic(Sound.MainMenuMusic);
     }
 
 
@@ -34,12 +34,12 @@ public class MainMenu : MonoBehaviour
       // {
       //    playerAnimator.SetTrigger("StopPush");
       // }
+     
     }
 
     void StartGame()
     {
-      //  SceneManager.LoadScene("Level1");
-      // SceneFader.instance.sceneFader(1);
+      AudioManager.instance.PlaySound(Sound.ButtonClick);
       levelSelection.SetActive(true);
       
       foreach ( GameObject o in menuUI)
@@ -49,8 +49,19 @@ public class MainMenu : MonoBehaviour
        
     }
 
+   public void DeactivateLevelSelection()
+    {
+      AudioManager.instance.PlaySound(Sound.BackButton);
+      levelSelection.SetActive(false);
+       foreach ( GameObject o in menuUI)
+      {
+        o.SetActive(true);
+      }
+    }
+
     void QuitButton()
     {
+      AudioManager.instance.PlaySound(Sound.BackButton);
       Application.Quit();
     }
 

@@ -4,30 +4,41 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-  [SerializeField]
-   Animator playerAnim;
-   
+   [Header("Components")] 
+   [SerializeField]Animator playerAnim;
    BoxCollider2D playerCollider;
    Rigidbody2D rigidbody2D;
    PlayerStats playerStats;
   
-   // Movement Variable
+   [Header("\nMovement Settings")]
    public float Speed;
    public float jumpForce;
    float Horizontal;
    [HideInInspector]public bool canMove = true;
+  
 
-
-   // Ground  Collision
+   
+   [Header("\nCollision Settings")]
    public LayerMask groundLayer;
    public bool Grounded;
    public float groundLength;
    [SerializeField]Vector3 colliderOffset;
+
+
+   [Header("\nGravity Settings")]
    [SerializeField]float gravity = 1 ;
    [SerializeField]float gravityMultiplyer = 5;
-   
 
+
+   [Header("\nShooting Settings")]
+   [SerializeField] GameObject Bullet;
+   [SerializeField] Transform BulletPos;
+   bool isFacingLeft ;
+
+   [Header("\nMeleeAttack Settings")]
+   [SerializeField] int staffDamage;
   
+
 
    void Awake()
    {
@@ -39,28 +50,36 @@ public class PlayerController : MonoBehaviour
 
    void Update()
    {
-     if ( playerStats.isAlive() && canMove )
+      
+      Horizontal = Input.GetAxis("Horizontal");
+
+     
+     if ( playerStats.isAlive() && canMove && !GamePlay.instace.isPlayerFall)
      {
        Grounded =Physics2D.Raycast(transform.position + colliderOffset,Vector2.down,groundLength,groundLayer) || Physics2D.Raycast(transform.position-colliderOffset,Vector2.down,groundLength,groundLayer);
-
-       Horizontal = Input.GetAxis("Horizontal");
        
        AnimationController(Horizontal);
        
        PlayerMovement(Horizontal);
 
-       if ( Grounded  && Input.GetButtonDown("Jump"))
+      
+
+       
+       if (Grounded && Input.GetButtonDown("Jump") )
        {
-       Jump();
+         Jump();
        }
-     }   
-  }
+     }
+   }
 
    void FixedUpdate()
    {
-    ModifyGravity();
+     ModifyGravity();   
    }
 
+   
+   
+   
    void ModifyGravity()
    {
      if( !Grounded)
@@ -87,41 +106,81 @@ public class PlayerController : MonoBehaviour
 
    void Jump()
     {
-      // Jump Controller
         rigidbody2D.velocity= new Vector2(rigidbody2D.velocity.x,0);
         rigidbody2D.AddForce(Vector2.up * jumpForce , ForceMode2D.Impulse);
-        playerAnim.SetTrigger("jump");
+        playerAnim.SetTrigger("jump");   
     }
 
    void PlayerMovement(float horizontal )
    {
-      // Horizontal Movement
+      
       Vector3 temp = transform.position;
       temp.x += horizontal * Speed * Time.deltaTime;
       transform.position = temp;
-
+  
       PlayerFlip(horizontal);
    }
 
 
   void AnimationController(float horizontal)
    {
-
       // For Run Animation   
-       playerAnim.SetFloat("Speed",Mathf.Abs(horizontal));
-      
+      playerAnim.SetFloat("Speed",Mathf.Abs(horizontal));
 
+      //----------------------------------------------------------------------
+
+      
+    
       // For Crouch Animation
-      if ( Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftControl)  ) 
+      if (Input.GetKeyDown(KeyCode.RightControl) || Input.GetKeyDown(KeyCode.LeftControl)  ) 
       {
-        playerAnim.SetBool("crouch",true);
+        playerAnim.SetBool("Crouch",true);
         Speed = 0f;
       }
       else if ( Input.GetKeyUp(KeyCode.RightControl) || Input.GetKeyUp(KeyCode.LeftControl) )
       {
-        playerAnim.SetBool("crouch",false);
+        playerAnim.SetBool("Crouch",false);
         Speed = 8f;
       }
+
+       //----------------------------------------------------------------------
+ 
+      // Shooting Bullet
+      if(Grounded)
+      {
+        if ( Input.GetMouseButton(1))
+        {
+        // Aim the gun
+        playerAnim.SetBool("Gun",true);
+
+        if( Input.GetMouseButtonDown(0))
+        {
+           // Shoot 
+            AudioManager.instance.PlayMusic(Sound.Shoot);
+            GameObject bullet = Instantiate(Bullet);
+            bullet.GetComponent<BulletScript>().ShootBullet(isFacingLeft);
+            bullet.transform.position = BulletPos.position;
+        }
+
+      }
+      else if ( Input.GetMouseButtonUp(1))
+      {
+         playerAnim.SetBool("Gun",false);
+        
+      }
+
+    }
+    
+    //----------------------------------------------------------------------
+
+    // Melee Attack 
+    if (Input.GetKeyDown(KeyCode.M))
+    {
+      playerAnim.SetTrigger("Slash");
+    }
+   
+
+
    }
 
 
@@ -131,13 +190,18 @@ public class PlayerController : MonoBehaviour
       if(horizontal < 0)
       {
         scale.x = -1f * Mathf.Abs(scale.x);
+        isFacingLeft = true;
       }
       if(horizontal > 0)
       {
         scale.x = Mathf.Abs(scale.x);
+        isFacingLeft = false;
       }
       transform.localScale = scale;
    }
+
+
+   
 
    
    void OnDrawGizmos()
@@ -146,7 +210,6 @@ public class PlayerController : MonoBehaviour
       Gizmos.DrawLine(transform.position + colliderOffset , transform.position + colliderOffset + Vector3.down * groundLength);
       Gizmos.DrawLine(transform.position - colliderOffset , transform.position - colliderOffset + Vector3.down * groundLength);
    }
-
 
   
 }

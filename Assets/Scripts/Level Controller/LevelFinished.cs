@@ -10,11 +10,24 @@ public class LevelFinished : MonoBehaviour
 
     GameObject player;
 
+    [SerializeField] DoorCollider doorColl;
+
     public bool levelComplete;
+
+    [SerializeField] GameObject door;
 
     void Awake()
     {
       player = GameObject.FindGameObjectWithTag("Player");
+    }
+
+
+    void Update()
+    {
+      if ( doorColl.isPlayerCollided)
+      {
+        door.SetActive(true);
+      }
     }
 
     void OnTriggerEnter2D( Collider2D target)

@@ -6,6 +6,10 @@ public class GameCamera : MonoBehaviour
 {
     PlayerStats player;
 
+    public float OffsetX;
+    public float OffsetY;
+  
+
     void Awake()
     {
       player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerStats>();
@@ -21,8 +25,8 @@ public class GameCamera : MonoBehaviour
       if ( player.isAlive())
       {
         Vector3 temp = transform.position;
-        temp.x = player.transform.position.x;
-        temp.y = player.transform.position.y;
+        temp.x = player.transform.position.x + OffsetX;
+        temp.y = player.transform.position.y + OffsetY;
         transform.position = temp;
       }
     }

@@ -12,17 +12,17 @@ public class GamePlay : MonoBehaviour
    [SerializeField]private PlayerStats playerInfo;
 
    [SerializeField] GameObject gameOverPanel;
-
-
+   
    [SerializeField] Animator playerAnim;
 
    [SerializeField] GameObject player;
 
-   [SerializeField] GameOver gameOverCollider;
 
    [SerializeField] GameObject lifes;
 
    [SerializeField] Button restartButton;
+
+   [HideInInspector] public bool isPlayerFall = false;
 
    void Awake()
    {
@@ -39,12 +39,22 @@ public class GamePlay : MonoBehaviour
    }
 
 
+   void Start()
+   {
+       AudioManager.instance.PlayMusic(Sound.GamePlayMusic);
+   }
+
+
    void Update()
    {
-       if (!playerInfo.isAlive() || gameOverCollider.isPlayerFall)
+       if (!playerInfo.isAlive() || isPlayerFall )
        {
            StartCoroutine(playerDied());
        }
+       else
+       {
+       }
+     
    }
 
 
@@ -52,11 +62,14 @@ public class GamePlay : MonoBehaviour
    {
       playerAnim.SetTrigger("Death");
       lifes.SetActive(false);
+      AudioManager.instance.PlayMusic(Sound.PlayerDead);
+
      
       yield return new WaitForSeconds(1f);
 
       player.GetComponent<SpriteRenderer>().enabled = false;
       gameOverPanel.SetActive(true);
+      AudioManager.instance.StopMusic();
     }
 
 
