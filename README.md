@@ -13,6 +13,10 @@ The 2D Platformer Shooting Game
 
 ##
 
+#GamePlay Video
+ YouTube Link - https://youtu.be/eGv_y5DZvr0
+
+
 GamePlay ScreenShots
 
 <img width="591" alt="im4" src="https://user-images.githubusercontent.com/93328047/163776593-e5169b92-75fe-450f-bd7e-bcdbcace0480.png">
