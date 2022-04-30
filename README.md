@@ -2,14 +2,20 @@
 The 2D Platformer Shooting Game
 
 
-# Feature
+# Features
 1.Smooth Player Movement 
 
 2.Beautiful Level Design 
 
 3.Reactive enemy system
 
-4.Boss fight
+4.Boss fight 
+
+
+# Programming Concepts Used
+  1.Coroutines.
+  
+  2.Singleton Pattern.
 
 ##
 
